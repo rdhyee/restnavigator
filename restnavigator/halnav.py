@@ -312,9 +312,12 @@ class HALNavigatorBase(object):
         yield self
         last = self
         while True:
-            current = last.next()
-            current() # fetch if necessary
-            yield current
+            try:
+                current = last.next()
+                current() # fetch if necessary
+                yield current
+            except StopIteration:
+                return
             last = current
 
     def __nonzero__(self):
